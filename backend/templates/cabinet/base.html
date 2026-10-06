@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load booking_extras static %}
+{% block title %}Кабинет — {{ organization.name }}{% endblock %}
+{% block body %}
+<div class="cabinet-layout">
+  <aside class="cabinet-sidebar" aria-label="Навигация кабинета">
+    <div class="cabinet-sidebar__brand">
+      <a href="{% url 'cabinet:dashboard' %}" class="site-logo-link" aria-label="Urok">
+        <picture>
+          <source srcset="{% static 'img/urok-logo-horizontal.webp' %}" type="image/webp">
+          <img src="{% static 'img/urok-logo-horizontal.png' %}" alt="Urok" class="site-logo site-logo--sm" width="120" height="36" loading="lazy">
+        </picture>
+      </a>
+      <p class="cabinet-org-name">{{ organization.name }}</p>
+    </div>
+    <nav class="cabinet-sidebar__nav">
+      <a href="{% url 'cabinet:dashboard' %}" class="nav-link {% nav_active 'dashboard' %}">
+        <span class="nav-link__icon" aria-hidden="true">📅</span> Календарь
+      </a>
+      <a href="{% url 'cabinet:schedule' %}" class="nav-link {% nav_active 'schedule' %}">
+        <span class="nav-link__icon" aria-hidden="true">🕐</span> Расписание
+      </a>
+      <a href="{% url 'cabinet:blocked' %}" class="nav-link {% nav_active 'blocked' %}">
+        <span class="nav-link__icon" aria-hidden="true">🚫</span> Блокировки
+      </a>
+      <a href="{% url 'cabinet:students' %}" class="nav-link {% nav_active 'students' 'student_detail' %}">
+        <span class="nav-link__icon" aria-hidden="true">👤</span> Ученики
+      </a>
+      <a href="{% url 'cabinet:bookings' %}" class="nav-link {% nav_active 'bookings' 'booking_detail' 'bookings_export' %}">
+        <span class="nav-link__icon" aria-hidden="true">📋</span> Заявки
+        {% if pending_count %}<span class="badge">{{ pending_count }}</span>{% endif %}
+      </a>
+      <a href="{% url 'cabinet:settings' %}" class="nav-link {% nav_active 'settings' %}">
+        <span class="nav-link__icon" aria-hidden="true">⚙️</span> Настройки
+      </a>
+      <a href="{% url 'cabinet:billing' %}" class="nav-link {% nav_active 'billing' %}">
+        <span class="nav-link__icon" aria-hidden="true">💳</span> Подписка
+      </a>
+    </nav>
+    <form method="post" action="{% url 'accounts:logout' %}" class="cabinet-sidebar__logout">
+      {% csrf_token %}
+      <button type="submit" class="outline secondary">Выйти</button>
+    </form>
+  </aside>
+
+  <div class="cabinet-body">
+    <header class="cabinet-mobile-bar" aria-label="Меню кабинета">
+      <span class="cabinet-org-name">{{ organization.name }}</span>
+      <details class="mobile-nav">
+        <summary>Меню</summary>
+        <nav class="mobile-nav__links">
+          <a href="{% url 'cabinet:dashboard' %}">Календарь</a>
+          <a href="{% url 'cabinet:schedule' %}">Расписание</a>
+          <a href="{% url 'cabinet:blocked' %}">Блокировки</a>
+          <a href="{% url 'cabinet:students' %}">Ученики</a>
+          <a href="{% url 'cabinet:bookings' %}">Заявки{% if pending_count %} ({{ pending_count }}){% endif %}</a>
+          <a href="{% url 'cabinet:settings' %}">Настройки</a>
+          <a href="{% url 'cabinet:billing' %}">Подписка</a>
+          <form method="post" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="outline secondary">Выйти</button>
+          </form>
+        </nav>
+      </details>
+    </header>
+
+    <main class="container cabinet-main">
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% block cabinet_content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}

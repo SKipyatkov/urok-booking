@@ -1,0 +1,18 @@
+{% extends "cabinet/base.html" %}
+{% block cabinet_content %}
+<h2>Настройки организации</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Сохранить</button>
+</form>
+
+<article style="margin-top: 2rem;">
+  <header><strong>Публичная ссылка</strong></header>
+  <div class="copy-box">
+    <input type="text" readonly value="{{ public_url }}" id="public-url">
+    <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('public-url').value)">Копировать</button>
+  </div>
+</article>
+{% endblock %}

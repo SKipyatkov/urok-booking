@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Вход — Urok Booking{% endblock %}
+{% block body %}
+<main class="auth-page">
+  <article class="auth-card">
+    <header>
+      {% include "includes/logo.html" %}
+      <h1>Вход</h1>
+      <p>Запись на уроки для репетиторов и школ</p>
+    </header>
+    {% if form.non_field_errors %}
+      <div class="alert-error" role="alert">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Войти</button>
+    </form>
+    <footer>
+      <small>Нет аккаунта? <a href="{% url 'accounts:register' %}">Регистрация</a></small>
+    </footer>
+  </article>
+</main>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% load static %}
+<a href="{% url 'home' %}" class="site-logo-link" aria-label="Urok — на главную">
+  <picture>
+    <source srcset="{% static 'img/urok-logo-horizontal.webp' %}" type="image/webp">
+    <img src="{% static 'img/urok-logo-horizontal.png' %}" alt="Urok" class="site-logo" width="160" height="48" loading="lazy">
+  </picture>
+</a>

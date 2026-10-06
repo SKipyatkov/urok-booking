@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Urok{% endblock %}</title>
+  <link rel="icon" href="{% static 'img/urok-logo-icon.png' %}" type="image/png">
+  <link rel="icon" href="{% static 'img/urok-logo-icon.webp' %}" type="image/webp">
+  <link rel="stylesheet" href="{% static 'vendor/pico/pico.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  <script src="{% static 'vendor/htmx.min.js' %}" defer></script>
+  <script src="{% static 'js/app.js' %}" defer></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  {% block body %}{% endblock %}
+</body>
+</html>

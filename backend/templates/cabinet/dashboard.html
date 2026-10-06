@@ -1,0 +1,68 @@
+{% extends "cabinet/base.html" %}
+{% load booking_extras %}
+{% block cabinet_content %}
+<div class="page-header">
+  <h2 class="page-title">Календарь</h2>
+  <div class="week-nav">
+    <a href="?week={{ prev_week }}" class="outline week-nav__btn">← Неделя</a>
+    {% if week_offset != 0 %}
+      <a href="?week=0" class="outline week-nav__btn week-nav__btn--muted">Сегодня</a>
+    {% endif %}
+    <a href="?week={{ next_week }}" class="outline week-nav__btn">Неделя →</a>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card stat-card--blue">
+    <span class="stat-value">{{ stats.new_students }}</span>
+    <span class="stat-label">Новые ученики</span>
+  </div>
+  <div class="stat-card stat-card--amber">
+    <span class="stat-value">{{ stats.pending_bookings }}</span>
+    <span class="stat-label">Ожидают подтверждения</span>
+  </div>
+  <div class="stat-card stat-card--purple">
+    <span class="stat-value">{{ stats.trial_students }}</span>
+    <span class="stat-label">На пробном</span>
+  </div>
+  <div class="stat-card stat-card--green">
+    <span class="stat-value">{{ stats.active_students }}</span>
+    <span class="stat-label">Учатся</span>
+  </div>
+</div>
+
+<div class="notice-box notice-box--highlight">
+  <strong>Ссылка для записи родителей</strong>
+  <div class="copy-box">
+    <input type="text" readonly value="{{ public_url }}" id="public-url" aria-label="Публичная ссылка">
+    <button type="button" data-copy="public-url" data-copy-label="Ссылка скопирована">Копировать</button>
+  </div>
+  <small>Отправьте в мессенджер или соцсети — родитель выберет слот сам</small>
+</div>
+
+<div class="calendar-grid">
+  {% for day in days %}
+  <div class="calendar-day{% if day.date == today %} calendar-day--today{% endif %}">
+    <h4>
+      {{ day.date|date:"D, d.m" }}
+      {% if day.date == today %}<span class="today-mark">сегодня</span>{% endif %}
+    </h4>
+    {% for booking in day.bookings %}
+    <div class="booking-item">
+      <a href="{% url 'cabinet:booking_detail' booking.pk %}">
+        <span class="booking-item__time">{{ booking.starts_at|local_datetime:organization }}</span>
+        <span class="booking-item__name">{{ booking.student.child_name }}</span>
+        <span class="status-pill {{ booking.status|status_badge }}">{{ booking.get_status_display }}</span>
+      </a>
+    </div>
+    {% empty %}
+    <span class="calendar-day__empty">—</span>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+
+<p class="page-actions">
+  <a href="{% url 'cabinet:schedule' %}" class="outline">Настроить расписание</a>
+</p>
+{% endblock %}

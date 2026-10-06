@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load booking_extras %}
+{% block title %}Заявка отправлена{% endblock %}
+{% block body %}
+<main class="center-page">
+  <article class="simple-card">
+    <h1>Заявка отправлена</h1>
+    <p>Преподаватель свяжется с вами для подтверждения времени.</p>
+    <div class="summary-box">
+      <strong>{{ booking.student.child_name }}</strong><br>
+      {{ booking.starts_at|local_datetime:organization }}<br>
+      <span style="color: var(--text-muted);">{{ organization.name }}</span>
+    </div>
+    <p><small>Письмо с деталями отправлено на {{ booking.student.parent_email }}</small></p>
+  </article>
+</main>
+{% endblock %}

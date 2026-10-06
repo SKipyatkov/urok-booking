@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Urok Booking — запись на уроки{% endblock %}
+{% block body %}
+<main class="landing-page">
+  <div class="landing-inner">
+    <div class="landing-hero">
+      <header class="landing-header">
+        {% include "includes/logo.html" %}
+        <h1>Запись на уроки без хаоса в переписке</h1>
+        <p class="landing-lead">
+          Urok Booking — сервис для репетиторов и мини-школ.
+          Дайте родителям ссылку, ведите календарь и статусы учеников в одном месте.
+        </p>
+        <div class="landing-cta">
+          <a href="{% url 'accounts:register' %}" role="button">Попробовать бесплатно</a>
+          <a href="{% url 'accounts:login' %}" class="outline" role="button">Войти</a>
+        </div>
+        <p class="landing-note">14 дней пробного периода · для репетиторов в России</p>
+      </header>
+
+      <div class="landing-preview" aria-hidden="true">
+        <div class="landing-preview__card">
+          <div class="landing-preview__bar"></div>
+          <div class="landing-preview__stats">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="landing-preview__calendar">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="landing-features">
+      <article class="feature-card">
+        <div class="feature-card__icon" aria-hidden="true">🔗</div>
+        <h3>Публичная ссылка</h3>
+        <p>Родитель выбирает дату и слот, оставляет контакты — заявка сразу у вас в кабинете.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-card__icon" aria-hidden="true">📊</div>
+        <h3>Календарь и статусы</h3>
+        <p>Пробный, учится, отказ — видно, кто на каком этапе воронки.</p>
+      </article>
+      <article class="feature-card">
+        <div class="feature-card__icon" aria-hidden="true">✨</div>
+        <h3>Без лишнего</h3>
+        <p>Без CRM-монстра. Ссылка на Телемост — в карточке урока, напоминания — по почте.</p>
+      </article>
+    </section>
+  </div>
+</main>
+{% endblock %}

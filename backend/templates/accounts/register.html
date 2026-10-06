@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Регистрация — Urok Booking{% endblock %}
+{% block body %}
+<main class="auth-page">
+  <article class="auth-card auth-card--wide">
+    <header>
+      {% include "includes/logo.html" %}
+      <h1>Регистрация</h1>
+      <p>Создайте профиль школы и начните принимать заявки</p>
+    </header>
+    {% if form.non_field_errors %}
+      <div class="alert-error" role="alert">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Зарегистрироваться</button>
+    </form>
+    <footer>
+      <small>Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войти</a></small>
+    </footer>
+  </article>
+</main>
+{% endblock %}

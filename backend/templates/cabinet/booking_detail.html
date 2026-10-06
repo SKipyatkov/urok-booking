@@ -1,0 +1,25 @@
+{% extends "cabinet/base.html" %}
+{% load booking_extras %}
+{% block cabinet_content %}
+<p><a href="{% url 'cabinet:bookings' %}">← К списку бронирований</a></p>
+<h2>Бронирование</h2>
+
+<dl>
+  <dt>Ученик</dt><dd><a href="{% url 'cabinet:student_detail' booking.student.pk %}">{{ booking.student.child_name }}</a></dd>
+  <dt>Родитель</dt><dd>{{ booking.student.parent_name }} — {{ booking.student.parent_email }}, {{ booking.student.parent_phone }}</dd>
+  <dt>Время</dt><dd>{{ booking.starts_at|local_datetime:organization }} — {{ booking.ends_at|local_datetime:organization }}</dd>
+  <dt>Тип</dt><dd>{{ booking.get_type_display }}</dd>
+</dl>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Сохранить</button>
+</form>
+
+{% if booking.meeting_url %}
+<p style="margin-top: 1rem;">
+  <a href="{{ booking.meeting_url }}" role="button" target="_blank" rel="noopener">Открыть Телемост</a>
+</p>
+{% endif %}
+{% endblock %}

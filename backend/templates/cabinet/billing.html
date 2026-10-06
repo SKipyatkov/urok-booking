@@ -1,0 +1,32 @@
+{% extends "cabinet/base.html" %}
+{% block cabinet_content %}
+<h2 class="page-title">Подписка</h2>
+
+<div class="notice-box">
+  <p><strong>Текущий тариф:</strong> {{ organization.get_plan_display }}</p>
+  {% if organization.trial_ends_at %}
+    <p>Пробный период до: {{ organization.trial_ends_at|date:"d.m.Y H:i" }}</p>
+  {% endif %}
+  {% if organization.subscription_paid_until %}
+    <p>Оплачено до: {{ organization.subscription_paid_until|date:"d.m.Y H:i" }}</p>
+  {% endif %}
+  {% if is_active %}
+    <p class="messages" style="margin-top: 0.75rem;"><li style="list-style: none; margin: 0;">Доступ активен</li></p>
+  {% else %}
+    <p class="alert-error">Пробный период закончился. Оплатите подписку, чтобы продолжить работу в кабинете и принимать заявки.</p>
+  {% endif %}
+</div>
+
+<article class="notice-box">
+  <header><strong>Соло — {{ price }} ₽/мес</strong></header>
+  <p>1 преподаватель, публичная запись, календарь, ученики и напоминания.</p>
+  {% if yookassa_configured %}
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Оплатить {{ price }} ₽/мес</button>
+    </form>
+  {% else %}
+    <p><small>Оплата через ЮKassa будет доступна после настройки на сервере.</small></p>
+  {% endif %}
+</article>
+{% endblock %}

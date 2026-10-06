@@ -1,0 +1,12 @@
+{% if slots %}
+<div class="grid" style="grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.5rem;">
+  {% for slot, label in slots %}
+  <div class="slot-btn">
+    <input type="radio" name="slot_radio" id="slot-{{ forloop.counter }}" value="{{ slot.starts_at.isoformat }}">
+    <label for="slot-{{ forloop.counter }}">{{ label }}</label>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty-slots">На {{ selected_date|date:"d.m.Y" }} свободных слотов нет.<br>Выберите другую дату выше.</p>
+{% endif %}

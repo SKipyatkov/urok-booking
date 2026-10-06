@@ -1,0 +1,40 @@
+{% extends "cabinet/base.html" %}
+{% block cabinet_content %}
+<h2>Расписание доступности</h2>
+<p>Укажите дни и часы, когда вы принимаете учеников. Слоты для записи генерируются автоматически ({{ organization.get_slot_duration_minutes_display }}).</p>
+
+{% if rules %}
+<table>
+  <thead>
+    <tr><th>День</th><th>Начало</th><th>Конец</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for rule in rules %}
+    <tr>
+      <td>{{ rule }}</td>
+      <td>{{ rule.start_time|time:"H:i" }}</td>
+      <td>{{ rule.end_time|time:"H:i" }}</td>
+      <td>
+        <form method="post" style="margin:0;">
+          {% csrf_token %}
+          <input type="hidden" name="delete_rule" value="{{ rule.pk }}">
+          <button type="submit" class="outline secondary" style="padding:0.25rem 0.5rem;">Удалить</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p><em>Правила не заданы. Добавьте хотя бы один день.</em></p>
+{% endif %}
+
+<article style="margin-top: 2rem;">
+  <header><strong>Добавить правило</strong></header>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Добавить</button>
+  </form>
+</article>
+{% endblock %}

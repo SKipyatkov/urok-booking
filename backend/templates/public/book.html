@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Запись — {{ organization.name }}{% endblock %}
+{% block body %}
+<main class="public-page">
+  <article class="public-card">
+    <header class="public-header">
+      <h1>{{ organization.name }}</h1>
+      {% if organization.description %}
+        <p>{{ organization.description }}</p>
+      {% else %}
+        <p>Запись на пробный урок</p>
+      {% endif %}
+    </header>
+
+    <ol class="booking-steps" aria-label="Шаги записи">
+      <li class="booking-steps__item booking-steps__item--active">
+        <span class="booking-steps__num">1</span> Выберите время
+      </li>
+      <li class="booking-steps__item">
+        <span class="booking-steps__num">2</span> Контакты
+      </li>
+    </ol>
+
+    <section class="public-section">
+      <h2>Когда удобно?</h2>
+      <form method="get" id="date-form" class="form-stack">
+        <label>
+          День
+          <input type="date"
+                 name="date"
+                 value="{{ selected_date|date:'Y-m-d' }}"
+                 min="{{ today|date:'Y-m-d' }}"
+                 hx-get="{% url 'public:book' organization.slug %}"
+                 hx-target="#slots-container"
+                 hx-include="#date-form"
+                 hx-trigger="change">
+        </label>
+      </form>
+      <div id="slots-container" class="slots-wrap">
+        {% include "public/partials/slots.html" %}
+      </div>
+      <div id="slot-preview" class="slot-preview" hidden>
+        <span class="slot-preview__label">Выбрано:</span>
+        <strong class="slot-preview__time"></strong>
+        <span class="slot-preview__date">{{ selected_date|date:"d.m.Y" }}</span>
+      </div>
+    </section>
+
+    <section class="public-section">
+      <h2>Ваши контакты</h2>
+      {% if form.non_field_errors %}
+        <div class="alert-error" role="alert">{{ form.non_field_errors }}</div>
+      {% endif %}
+      <form method="post" class="form-stack">
+        {% csrf_token %}
+        <input type="hidden" name="slot_start" id="slot_start" value="{{ form.slot_start.value|default:'' }}">
+        {{ form.parent_name.label_tag }}{{ form.parent_name }}
+        <div class="form-row">
+          <div>
+            {{ form.parent_email.label_tag }}{{ form.parent_email }}
+          </div>
+          <div>
+            {{ form.parent_phone.label_tag }}{{ form.parent_phone }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            {{ form.child_name.label_tag }}{{ form.child_name }}
+          </div>
+          <div>
+            {{ form.child_age.label_tag }}{{ form.child_age }}
+          </div>
+        </div>
+        {{ form.notes.label_tag }}{{ form.notes }}
+        <button type="submit" id="submit-btn" disabled class="submit-btn">Записаться на пробный урок</button>
+      </form>
+    </section>
+  </article>
+  <footer class="public-footer">
+    {% load static %}
+    <picture>
+      <source srcset="{% static 'img/urok-logo-horizontal.webp' %}" type="image/webp">
+      <img src="{% static 'img/urok-logo-horizontal.png' %}" alt="Urok" class="site-logo site-logo--xs" width="100" height="30" loading="lazy">
+    </picture>
+    <small>Запись на уроки</small>
+  </footer>
+</main>
+{% endblock %}

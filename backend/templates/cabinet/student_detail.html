@@ -1,0 +1,42 @@
+{% extends "cabinet/base.html" %}
+{% load booking_extras %}
+{% block cabinet_content %}
+<p><a href="{% url 'cabinet:students' %}">← К списку учеников</a></p>
+<h2>{{ student.child_name }}</h2>
+
+<dl>
+  <dt>Родитель</dt><dd>{{ student.parent_name }}</dd>
+  <dt>Email</dt><dd>{{ student.parent_email }}</dd>
+  <dt>Телефон</dt><dd>{{ student.parent_phone }}</dd>
+  <dt>Возраст</dt><dd>{{ student.child_age }} лет</dd>
+  {% if student.notes %}<dt>Комментарий</dt><dd>{{ student.notes }}</dd>{% endif %}
+</dl>
+
+<h3>Бронирования</h3>
+{% if bookings %}
+<table>
+  <thead>
+    <tr><th>Дата</th><th>Тип</th><th>Статус</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.starts_at|local_datetime:organization }}</td>
+      <td>{{ booking.get_type_display }}</td>
+      <td>{{ booking.get_status_display }}</td>
+      <td><a href="{% url 'cabinet:booking_detail' booking.pk %}">Открыть</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p><em>Бронирований пока нет.</em></p>
+{% endif %}
+
+<h3>Статус ученика</h3>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Сохранить статус</button>
+</form>
+{% endblock %}

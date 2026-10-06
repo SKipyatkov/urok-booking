@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Недоступно{% endblock %}
+{% block body %}
+<main class="center-page">
+  <article class="simple-card">
+    <h1>Запись недоступна</h1>
+    {% if subscription_expired %}
+    <p>«{{ organization.name }}» сейчас не принимает заявки — подписка не активна.</p>
+    {% else %}
+    <p>Онлайн-запись для «{{ organization.name }}» сейчас не принимается.</p>
+    {% endif %}
+    <p><small>Свяжитесь со школой напрямую.</small></p>
+  </article>
+</main>
+{% endblock %}

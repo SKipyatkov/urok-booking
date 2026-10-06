@@ -1,0 +1,41 @@
+{% extends "cabinet/base.html" %}
+{% load booking_extras %}
+{% block cabinet_content %}
+<h2>Блокировки времени</h2>
+<p>Заблокируйте конкретный день и часы — эти слоты не будут доступны для записи.</p>
+
+{% if blocked_slots %}
+<table>
+  <thead>
+    <tr><th>Начало</th><th>Конец</th><th>Причина</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for slot in blocked_slots %}
+    <tr>
+      <td>{{ slot.starts_at|local_datetime:organization }}</td>
+      <td>{{ slot.ends_at|local_datetime:organization }}</td>
+      <td>{{ slot.reason|default:"—" }}</td>
+      <td>
+        <form method="post" style="margin:0;">
+          {% csrf_token %}
+          <input type="hidden" name="delete_blocked" value="{{ slot.pk }}">
+          <button type="submit" class="outline secondary" style="padding:0.25rem 0.5rem;">Удалить</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p><em>Нет заблокированных интервалов.</em></p>
+{% endif %}
+
+<article style="margin-top: 2rem;">
+  <header><strong>Добавить блокировку</strong></header>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Заблокировать</button>
+  </form>
+</article>
+{% endblock %}

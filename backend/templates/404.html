@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Страница не найдена{% endblock %}
+{% block body %}
+<main class="center-page">
+  <article class="simple-card">
+    {% include "includes/logo.html" %}
+    <span class="error-label">404</span>
+    <h1>Страница не найдена</h1>
+    <p>Возможно, ссылка устарела или указана с ошибкой.</p>
+    <p><a href="/">На главную</a></p>
+  </article>
+</main>
+{% endblock %}

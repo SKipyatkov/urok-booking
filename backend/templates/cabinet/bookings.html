@@ -1,0 +1,47 @@
+{% extends "cabinet/base.html" %}
+{% load booking_extras %}
+{% block cabinet_content %}
+<div class="page-header">
+  <h2 class="page-title">Заявки</h2>
+  <a href="{% url 'cabinet:bookings_export' %}" class="outline">Скачать CSV</a>
+</div>
+
+<form method="get" class="filter-bar">
+  <label>
+    Статус
+    <select name="status" onchange="this.form.submit()">
+      <option value="">Все</option>
+      {% for value, label in status_choices %}
+      <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+</form>
+
+{% if bookings %}
+<div class="table-wrap">
+  <table class="data-table">
+    <thead>
+      <tr><th>Дата</th><th>Ученик</th><th>Тип</th><th>Статус</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for booking in bookings %}
+      <tr>
+        <td>{{ booking.starts_at|local_datetime:organization }}</td>
+        <td>{{ booking.student.child_name }}</td>
+        <td>{{ booking.get_type_display }}</td>
+        <td><span class="status-pill {{ booking.status|status_badge }}">{{ booking.get_status_display }}</span></td>
+        <td><a href="{% url 'cabinet:booking_detail' booking.pk %}">Открыть</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">
+  <div class="empty-state__icon" aria-hidden="true">📭</div>
+  <p>Бронирований пока нет</p>
+  <small>Скопируйте ссылку на запись с главной страницы кабинета</small>
+</div>
+{% endif %}
+{% endblock %}

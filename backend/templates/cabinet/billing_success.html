@@ -1,0 +1,13 @@
+{% extends "cabinet/base.html" %}
+{% block cabinet_content %}
+<article class="simple-card" style="max-width: 100%; text-align: left;">
+  <h1>Спасибо!</h1>
+  {% if is_active %}
+    <p>Оплата принята. Подписка активна — можно работать в кабинете.</p>
+    <p><a href="{% url 'cabinet:dashboard' %}" role="button">В кабинет</a></p>
+  {% else %}
+    <p>Если оплата прошла, подписка обновится в течение минуты. Обновите страницу или вернитесь позже.</p>
+    <p><a href="{% url 'cabinet:billing' %}">Статус подписки</a></p>
+  {% endif %}
+</article>
+{% endblock %}
